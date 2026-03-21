@@ -1,0 +1,47 @@
+# Breakout Pullback Strategy / 突破回踩
+# 适合趋势延续型的强势股，等待穿越阻力后回踩确认入场。
+
+name: breakout_pullback
+display_name: 突破回踩
+description: 检测价位突破压力位后回踩支撑进行跟进的趋势延续机会。
+category: trend
+core_rules: [2, 4, 6]
+required_tools:
+  - get_daily_history
+  - analyze_trend
+  - get_realtime_quote
+  - search_stock_news
+
+instructions: |
+  **突破回踩（Breakout Pullback Strategy）**
+
+  逻辑概览：
+
+  1. **趋势确认**：
+     - 使用 `get_daily_history`（60日）和 `analyze_trend` 判断方向。
+     - 需满足 MA5 > MA10 > MA20，且价格在最近20日新高之上。
+     - 成交量伴随突破阶段放大（突破当日量 > 20日均量的1.5倍）。
+
+  2. **突破点位**：
+     - 识别近期震荡区间阻力价（前高）
+     - 当前价已穿越阻力位并企稳，突破价位可作为支撑。
+
+  3. **回踩确认**：
+     - 价格回踩突破位或 MA10 附近，且未跌破该支撑。
+     - 回踩时量能缩小（小于5日均量），显示吸筹不放大。
+     - 回踩后出现阳线回抽，且成交量略微回升。
+
+  4. **风险管控**：
+     - 止损设在支撑下方 1-2% 或回踩低点下方。
+     - 若出现利空新闻（使用 `search_stock_news` 判断）“一票否决”。
+
+  5. **升级条件**（加分项）：
+     - 所属板块强势（板块涨幅前30%）；
+     - 核心财报/业绩预增利好；
+     - 近3日量价继续放大。
+
+  评分调节：
+  - 满足趋势+突破+回踩确认：sentiment_score +10
+  - 新闻利好或板块加成：额外 +5
+  - 在 `buy_reason` 和 `pattern_analysis` 中注明“突破回踩”。
+  - 建议仓位：最多 4-6 成，保守 2-3 成。
