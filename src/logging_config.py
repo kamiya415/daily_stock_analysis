@@ -77,8 +77,15 @@ def setup_logging(
     else:
         level = logging.DEBUG if debug else logging.INFO
 
-    # 创建日志目录
+    # 校验日志目录参数
+    if not log_dir:
+        raise ValueError("log_dir cannot be None or empty")
+
     log_path = Path(log_dir)
+    if log_path.exists() and not log_path.is_dir():
+        raise ValueError(f"log_dir exists but is not a directory: {log_dir}")
+
+    # 创建日志目录
     log_path.mkdir(parents=True, exist_ok=True)
 
     # 日志文件路径（按日期分文件）

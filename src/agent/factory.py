@@ -42,7 +42,6 @@ _SENTINEL = object()
 # the cache if AGENT_SKILL_DIR changes at runtime (e.g. via config reload).
 _SKILL_MANAGER_CUSTOM_DIR: object = _SENTINEL
 
-
 def get_tool_registry():
     """Return a cached ToolRegistry (built once, shared across requests)."""
     global _TOOL_REGISTRY
